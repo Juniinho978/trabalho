@@ -1,0 +1,49 @@
+# trabalho
+
+banco_dados = []
+
+
+def mostrar_produto():
+    contador = 1
+    for item in banco_dados:
+        print(F'{contador} - {item}')
+        contador += 1
+
+
+def selecionar_menu(opcao):
+    if (opcao == '1'):
+        produto = input('Digite o produto novo: ')
+        banco_dados.append(produto)
+    elif (opcao == '2'):
+        mostrar_produto()
+    elif (opcao == '3'):
+        mostrar_produto()
+        numero_produto = int(
+            input('digite o numero do produto para excluir: '))
+        del banco_dados[numero_produto - 1]
+        mostrar_produto()
+    elif (opcao == '4'):
+        mostrar_produto()
+        numero_produto = int(input('digite o numero do produto para editar: '))
+        novo_produto = input('digite o novo produto')
+        banco_dados[numero_produto - 1] = novo_produto
+    elif (opcao == '0'):
+        print('Saindo do sistema...')
+        exit(0)
+    else:
+        print('Opcao incorreta, tente novamente!')
+
+
+def exibir_menu():
+    print('---> MENU <---')
+    print('1 - Adicionar produto')
+    print('2 - visualizar produto')
+    print('3 - Excluir produto')
+    print('4 - Atualizar estoque')
+    print('0 - sair')
+    opcao = input('Escolha uma opcao: ')
+    selecionar_menu(opcao)
+    exibir_menu()
+
+
+exibir_menu()
