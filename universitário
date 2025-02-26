@@ -1,0 +1,123 @@
+# Lista para armazenar os eventos (como dicionários)
+banco_dados = []
+
+
+def mostrar_evento():
+    """Exibe todos os eventos cadastrados com numeração e detalhes."""
+    if not banco_dados:
+        print("Nenhum evento cadastrado ainda.")
+        return
+    
+    print("\nLista de Eventos:")
+    for i, evento in enumerate(banco_dados, start=1):
+        print(f"{i} - Nome: {evento['nome']}")
+        print(f"    📅 Data: {evento['data']}")
+        print(f"    📝 Descrição: {evento['descricao']}")
+        print(f"    🎟 Vagas: {evento['vagas']} disponíveis\n")
+
+
+def selecionar_menu(opcao):
+    """Executa a ação com base na opção escolhida pelo usuário."""
+    
+    if opcao == '1':  # Cadastrar evento
+        nome = input('Digite o nome do evento: ')
+        data = input('Digite a data do evento (formato: DD/MM/AAAA): ')
+        descricao = input('Digite a descrição do evento: ')
+        
+        while True:
+            try:
+                vagas = int(input('Digite o número máximo de participantes: '))
+                if vagas > 0:
+                    break
+                else:
+                    print("O número de vagas deve ser maior que zero.")
+            except ValueError:
+                print("Erro: Digite um número válido.")
+
+        evento = {"nome": nome, "data": data, "descricao": descricao, "vagas": vagas}
+        banco_dados.append(evento)
+        print(f"\n✅ Evento '{nome}' cadastrado com sucesso!\n")
+
+    elif opcao == '2':  # Listar eventos
+        mostrar_evento()
+
+    elif opcao == '3':  # Excluir evento
+        if not banco_dados:
+            print("Não há eventos para excluir.\n")
+            return
+
+        mostrar_evento()
+        try:
+            numero_evento = int(input('Digite o número do evento para excluir: '))
+            if 1 <= numero_evento <= len(banco_dados):
+                evento_excluido = banco_dados.pop(numero_evento - 1)
+                print(f"\n🗑 Evento '{evento_excluido['nome']}' excluído com sucesso!\n")
+            else:
+                print("Número inválido! Tente novamente.\n")
+        except ValueError:
+            print("Erro: Digite um número válido.\n")
+
+    elif opcao == '4':  # Editar evento
+        if not banco_dados:
+            print("Não há eventos para editar.\n")
+            return
+
+        mostrar_evento()
+        try:
+            numero_evento = int(input('Digite o número do evento para editar: '))
+            if 1 <= numero_evento <= len(banco_dados):
+                evento = banco_dados[numero_evento - 1]
+
+                print("\nDeixe em branco para manter a informação atual.\n")
+                novo_nome = input(f"Novo nome (atual: {evento['nome']}): ") or evento['nome']
+                nova_data = input(f"Nova data (atual: {evento['data']}): ") or evento['data']
+                nova_descricao = input(f"Nova descrição (atual: {evento['descricao']}): ") or evento['descricao']
+                
+                while True:
+                    novas_vagas = input(f"Novas vagas (atual: {evento['vagas']}): ")
+                    if novas_vagas == "":
+                        novas_vagas = evento['vagas']
+                        break
+                    try:
+                        novas_vagas = int(novas_vagas)
+                        if novas_vagas > 0:
+                            break
+                        else:
+                            print("O número de vagas deve ser maior que zero.")
+                    except ValueError:
+                        print("Erro: Digite um número válido.")
+
+                evento.update({"nome": novo_nome, "data": nova_data, "descricao": nova_descricao, "vagas": novas_vagas})
+                print(f"\n✅ Evento atualizado com sucesso!\n")
+            else:
+                print("Número inválido! Tente novamente.\n")
+        except ValueError:
+            print("Erro: Digite um número válido.\n")
+
+    elif opcao == '0':  # Sair do sistema
+        print('Saindo do sistema...')
+        return False  # Indica que o loop deve parar
+
+    else:
+        print('Opção incorreta, tente novamente!\n')
+
+    return True  # Indica que o loop deve continuar
+
+
+def exibir_menu():
+    """Exibe o menu de opções para o usuário."""
+    while True:
+        print("\n---> MENU <---")
+        print('1 - Cadastro de novos eventos')
+        print('2 - Visualização de eventos disponíveis')
+        print('3 - Excluir eventos')
+        print('4 - Atualizar eventos')
+        print('0 - Sair')
+
+        opcao = input('Escolha uma opção: ')
+        if not selecionar_menu(opcao):  # Se retornar False, sai do loop
+            break
+
+
+# Iniciar o programa
+exibir_menu()
