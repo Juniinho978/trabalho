@@ -1,4 +1,4 @@
-# Lista para armazenar os eventos (como dicionários)
+
 banco_dados = []
 
 
